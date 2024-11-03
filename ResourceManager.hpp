@@ -40,6 +40,8 @@ public:
         return *this;
     }
 
-    ResourceManager(ResourceManager&& other) noexcept            = default;
-    ResourceManager& operator=(ResourceManager&& other) noexcept = default;
+    ResourceManager(const ResourceManager&)            = delete; 
+    ResourceManager& operator=(const ResourceManager&) = delete; 
+    ResourceManager(ResourceManager&&) noexcept        = default;     
+    ResourceManager& operator=(ResourceManager&&) noexcept = default; 
 };
