@@ -11,46 +11,46 @@ public:
     {
         std::cout << "ResourceManager created" << std::endl;
     }
+    ~ResourceManager() { std::cout << "ResourceManager destroyed" << std::endl; }
+<<<<<<<<< Temporary merge branch 1
 
-    ~ResourceManager()
-    {
-        delete resource;
-        std::cout << "ResourceManager destroyed" << std::endl;
-    }
+    double get() { return resource->get(); }
 
     double get() const { return resource->get(); }
 
     ResourceManager(const ResourceManager& other)
     {
-        resource = new Resource(*other.resource);
+        if (other.resource) {
+            resource =
+                std::make_unique< Resource >(*other.resource); 
+        }
         std::cout << "ResourceManager copied" << std::endl;
     }
 
     ResourceManager& operator=(const ResourceManager& other)
     {
-        if (this != &other) {
-            delete resource;                         
-            resource = new Resource(*other.resource); 
+        if (this == &other) {
+            return *this; 
+        }
+
+        if (other.resource) {
+            resource =
+                std::make_unique< Resource >(*other.resource); 
+        }
+        else {
+            resource.reset(); 
         }
         std::cout << "ResourceManager assigned" << std::endl;
         return *this;
     }
-
-    ResourceManager(ResourceManager&& other) noexcept : resource(other.resource)
-    {
-        other.resource = nullptr;
-        std::cout << "ResourceManager moved" << std::endl;
-    }
-
-    ResourceManager& operator=(ResourceManager&& other) noexcept
-    {
-        if (this != &other) {
-            delete resource;                 
-            resource       = other.resource; 
-            other.resource = nullptr;        
-        }
-        std::cout << "ResourceManager move-assigned" << std::endl;
-        return *this;
-    }
 };
 
+    ResourceManager(ResourceManager&&) noexcept = default;
+=========
+    double get() { return resource->get(); }
+    ResourceManager(const ResourceManager&)                = delete;
+    ResourceManager& operator=(const ResourceManager&)     = delete;
+    ResourceManager(ResourceManager&&) noexcept            = default;
+>>>>>>>>> Temporary merge branch 2
+    ResourceManager& operator=(ResourceManager&&) noexcept = default;
+};
